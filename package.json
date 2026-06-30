@@ -19,5 +19,8 @@
     "build": "echo build TBD in Phase 6",
     "dev": "echo dev server TBD in Phase 6",
     "test": "echo test runner TBD in Phase 6"
+  },
+  "dependencies": {
+    "markdown-it": "^14.2.0"
   }
 }
