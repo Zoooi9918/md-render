@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>markdown-renderer — Live Demo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>markdown-renderer</h1>
+    <p>A performance-first markdown-to-HTML renderer with Obsidian-flavored extensions.</p>
+    <a class="github-link" href="https://github.com/Zoooi9918/markdown-renderer" target="_blank" rel="noopener">Open in GitHub</a>
+  </header>
+
+  <main>
+    <div class="toolbar">
+      <label for="sample-select">Sample:</label>
+      <select id="sample-select">
+        <option value="game-guide">Game Guide</option>
+        <option value="tech-doc">Tech Doc</option>
+        <option value="notes">Obsidian Notes</option>
+        <option value="showcase">Showcase</option>
+      </select>
+
+      <label for="theme-select">Theme:</label>
+      <select id="theme-select">
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+        <option value="auto">Auto</option>
+        <option value="neon">Custom (Neon)</option>
+      </select>
+    </div>
+
+    <div class="panes">
+      <div class="pane editor-pane">
+        <textarea id="editor" spellcheck="false"></textarea>
+      </div>
+      <div class="pane preview-pane">
+        <div id="preview" class="md-content"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <a href="https://github.com/Zoooi9918/markdown-renderer#readme">README</a>
+    &middot;
+    <a href="https://github.com/Zoooi9918/markdown-renderer/tree/main/docs">Docs</a>
+    &middot;
+    <a href="https://github.com/Zoooi9918/markdown-renderer">GitHub</a>
+  </footer>
+
+  <script src="markdown-renderer.umd.min.js"></script>
+  <link rel="stylesheet" href="markdown-renderer.min.css">
+  <script src="demo.js"></script>
+</body>
+</html>

@@ -83,12 +83,14 @@ const builds = [
   {
     name: "IIFE",
     format: "iife",
+      entryPoint: resolve("src/iife-entry.js"),
     outfile: resolve(DIST_DIR, "markdown-renderer.iife.js"),
     globalName: "MarkdownRenderer",
     banner: { js: "/* markdown-renderer IIFE — exposes window.MarkdownRenderer */\n" },
   },
   {
     name: "IIFE (min)",
+      entryPoint: resolve("src/iife-entry.js"),
     format: "iife",
     minify: true,
     outfile: resolve(DIST_DIR, "markdown-renderer.iife.min.js"),
@@ -101,6 +103,7 @@ for (const build of builds) {
   try {
     await esbuild.build({
       ...baseConfig,
+        entryPoints: build.entryPoint ? [build.entryPoint] : baseConfig.entryPoints,
       format: build.format,
       minify: build.minify || false,
       globalName: build.globalName,
