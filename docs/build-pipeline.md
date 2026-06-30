@@ -105,3 +105,12 @@ flowchart LR
     J --> K[dist/*.umd.js]
     G --> L[renderer.js injectStyles]
 ```
+
+## Deploy Site Workflow
+
+File: .github/workflows/deploy-site.yml
+
+- **Triggers**: Push to main with changes under site/ or dist/
+- **Steps**: Checkout -> Setup Node -> npm ci -> npm test -> npm run build -> Copy site/ + dist/ to deploy/ -> Publish to gh-pages
+- **Deployment**: Uses peaceiris/actions-gh-pages@v3 to publish to gh-pages branch
+- **Live URL**: https://Zoooi9918.github.io/markdown-renderer/

@@ -119,3 +119,16 @@ Heavy libraries (mermaid, KaTeX, highlight.js) are loaded from CDN on demand.
 For the lazy loading architecture, CDN fallback, and graceful degradation,
 see [docs/lazy-loading.md](lazy-loading.md).
 see [docs/lazy-loading.md](lazy-loading.md), including the **Manual Verification** section for pre-release testing.
+
+## Demo Site
+
+The demo site lives in site/ and is deployed to GitHub Pages (gh-pages branch).
+
+- site/index.html — Split-pane editor + preview
+- site/style.css — Site chrome only (header, toolbar, panes, footer)
+- site/demo.js — Editor to preview wiring, theme toggle, sample loader
+- site/samples/ — 4 curated markdown samples
+
+The .github/workflows/deploy-site.yml workflow copies site/ and dist/ into a single deploy directory and publishes to gh-pages on every push to main.
+
+Live demo: https://Zoooi9918.github.io/markdown-renderer/
