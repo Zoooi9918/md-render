@@ -52,6 +52,10 @@ export class MarkdownRenderer {
       callouts: calloutOptions = {},
       wikilinks: wikilinkOptions = {},
       obsidianEmbed: embedOptions = {},
+      plugins: userPlugins,
+      disablePlugins = [],
+      enablePlugins,
+      pluginOptions = {},
     } = options;
 
     const enabledRules = { ...DEFAULT_RULES, ...rules };
