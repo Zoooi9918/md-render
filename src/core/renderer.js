@@ -27,23 +27,20 @@ const DEFAULT_RULES = Object.freeze({
   wikilinks: true,
   obsidianEmbed: true,
 });
+
 /** Default theme */
 const DEFAULT_THEME = "light";
 const DEFAULT_CONTAINER_CLASS = "markdown-renderer";
 
 /**
  * High-performance markdown-to-HTML renderer with Obsidian-flavored extensions.
- *
- * Constructs a markdown-it instance on instantiation and applies
- * the enabled custom rules. The instance is cached for subsequent
- * render calls, avoiding reconstruction overhead.
  */
 export class MarkdownRenderer {
   /**
    * Creates a new MarkdownRenderer instance.
    *
    * @param {object} [options] - Configuration options
-   * @param {object} [options.markdownItOptions] - Options passed to markdown-it (html, linkify, typographer, breaks)
+   * @param {object} [options.markdownItOptions] - Options passed to markdown-it
    * @param {object} [options.rules] - Toggle individual custom rules on/off
    * @param {boolean} [options.rules.headingIds] - Enable heading ID generation
    * @param {boolean} [options.rules.callouts] - Enable Obsidian-style callouts
@@ -55,7 +52,10 @@ export class MarkdownRenderer {
    * @param {LazyPlugin[]} [options.plugins] - Custom plugin array (overrides default pack)
    * @param {string[]} [options.disablePlugins] - Plugin ids to disable
    * @param {string[]} [options.enablePlugins] - If set, ONLY these plugin ids are kept
-   * @param {Object<string, Object>} [options.pluginOptions] - Per-plugin option overrides keyed by id
+   * @param {Object<string, Object>} [options.pluginOptions] - Per-plugin option overrides
+   * @param {boolean} [options.injectStyles] - Inject CSS inline (requires build)
+   * @param {string} [options.theme] - Theme: "light" | "dark" | "auto"
+   * @param {string} [options.containerClass] - Container CSS class
    */
   constructor(options = {}) {
     const {
@@ -68,12 +68,20 @@ export class MarkdownRenderer {
       disablePlugins = [],
       enablePlugins,
       pluginOptions = {},
+      injectStyles = false,
+      theme = DEFAULT_THEME,
+      containerClass = DEFAULT_CONTAINER_CLASS,
     } = options;
 
     const enabledRules = { ...DEFAULT_RULES, ...rules };
 
     // Build the markdown-it instance with user options
     this._md = createMarkdownIt(markdownItOptions);
+
+    // Store theme and style settings
+    this._injectStyles = injectStyles;
+    this._theme = theme;
+    this._containerClass = containerClass;
 
     // Resolve plugin list
     let resolvedPlugins;
@@ -121,9 +129,6 @@ export class MarkdownRenderer {
 
   /**
    * Renders a markdown string to HTML (synchronous, fast path).
-   * For content with no lazy triggers, this is sufficient.
-   * Code blocks without highlighting, no mermaid, no math.
-   *
    * @param {string} markdownString - The markdown source to render
    * @returns {string} The rendered HTML string
    */
@@ -133,10 +138,6 @@ export class MarkdownRenderer {
 
   /**
    * Renders markdown asynchronously, loading lazy plugins on demand.
-   *
-   * Scans the AST for lazy triggers (mermaid fences, code fences with lang,
-   * math tokens), loads the required CDN libraries, then renders.
-   *
    * @param {string} markdownString - The markdown source to render
    * @returns {Promise<string>} The rendered HTML string
    */
@@ -162,7 +163,6 @@ export class MarkdownRenderer {
           this._md.use(factory, plugin.options || {});
           this._loadedPlugins.push(plugin.id);
         } catch (err) {
-          // Degrade gracefully — plugin not loaded, content renders as plain text
           console.warn(`[renderer] Failed to load ${needId}:`, err.message);
         }
       }
@@ -191,14 +191,13 @@ export class MarkdownRenderer {
       if (token.type === "math_inline" || token.type === "math_block") {
         needs.add("katex");
       }
-        // Also scan token content for math patterns (markdown-it doesn't know
-        // about $...$ without texmath already loaded — chicken-and-egg problem)
-        if (token.content) {
-          if (/\$\$[\s\S]*?\$\$/.test(token.content) || /\$[^$\n]+\$/.test(token.content)) {
-            needs.add("katex");
-          }
+      // Also scan token content for math patterns (chicken-and-egg problem)
+      if (token.content) {
+        if (/\$\$[\s\S]*?\$\$/.test(token.content) || /\$[^$\n]+\$/.test(token.content)) {
+          needs.add("katex");
         }
-      // Recurse into child tokens (e.g., list items, blockquotes)
+      }
+      // Recurse into child tokens
       if (token.children && token.children.length) {
         for (const child of this._scanTokens(token.children)) {
           needs.add(child);
@@ -211,8 +210,6 @@ export class MarkdownRenderer {
 
   /**
    * Renders markdown and inserts the HTML into a DOM element (async).
-   * After DOM insertion, runs postRender hooks (mermaid.run, etc.).
-   *
    * @param {string|HTMLElement} elementOrSelector - A CSS selector string or an HTMLElement
    * @param {string} markdownString - The markdown source to render
    * @returns {Promise<HTMLElement>} The target element with rendered content
@@ -227,18 +224,52 @@ export class MarkdownRenderer {
     }
 
     const html = await this.renderAsync(markdownString);
-      // Wrap in themed container
-      const wrapper = document.createElement("div");
-      wrapper.className = this._containerClass;
-      wrapper.setAttribute("data-theme", this._theme);
-      wrapper.innerHTML = html;
-      target.innerHTML = "";
-      target.appendChild(wrapper);
+
+    // Wrap in themed container
+    const wrapper = document.createElement("div");
+    wrapper.className = this._containerClass;
+    wrapper.setAttribute("data-theme", this._theme);
+    wrapper.innerHTML = html;
+    target.innerHTML = "";
+    target.appendChild(wrapper);
+
+    // Inject inline styles if requested
+    if (this._injectStyles) {
+      await this._injectStylesIntoHead();
+    }
 
     // Post-render hooks
     await this._postRender();
 
     return target;
+  }
+
+  /**
+   * Inject baked CSS into document head.
+   * Uses build-time generated inline.generated.js if available,
+   * otherwise falls back to fetching the CSS file (dev mode).
+   * @private
+   */
+  async _injectStylesIntoHead() {
+    if (typeof document === "undefined") return;
+    if (document.querySelector('style[data-md-renderer="true"]')) return;
+    let cssText;
+    try {
+      const mod = await import("../styles/inline.generated.js");
+      cssText = mod.default;
+    } catch {
+      try {
+        const resp = await fetch("dist/markdown-renderer.css");
+        cssText = await resp.text();
+      } catch {
+        console.warn("[renderer] Could not load CSS for injectStyles");
+        return;
+      }
+    }
+    const style = document.createElement("style");
+    style.textContent = cssText;
+    style.dataset.mdRenderer = "true";
+    document.head.appendChild(style);
   }
 
   /**
@@ -274,7 +305,7 @@ export class MarkdownRenderer {
   }
 
   /**
-   * Returns the list of deferred plugin ids (plugins without sync apply).
+   * Returns the list of deferred plugin ids.
    * @returns {string[]} Array of deferred plugin ids
    */
   getDeferredPlugins() {
