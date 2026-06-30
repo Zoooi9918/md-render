@@ -1,5 +1,5 @@
 /**
- * smoke.mjs — Node smoke test for markdown-renderer.
+ * smoke.mjs — Node smoke test for md-render.
  *
  * Imports from src/ (not dist) and runs 30+ assertions covering
  * all phases: 2 (core), 3 (plugins), 4 (lazy), 4.6 (hljs), 5 (theme), 6 (build).
@@ -159,41 +159,41 @@ function assert(label, condition) {
 /* ── Phase 6: Build artifacts (conditional ── skip if dist/ not built) ── */
 {
   const dist = join(__dirname, "..", "dist");
-  const hasBuild = existsSync(join(dist, "markdown-renderer.esm.js"));
+  const hasBuild = existsSync(join(dist, "md-render.esm.js"));
 
   if (hasBuild) {
     assert("Phase 6: dist/esm.js exists",
-      existsSync(join(dist, "markdown-renderer.esm.js")));
+      existsSync(join(dist, "md-render.esm.js")));
 
     assert("Phase 6: dist/esm.min.js exists",
-      existsSync(join(dist, "markdown-renderer.esm.min.js")));
+      existsSync(join(dist, "md-render.esm.min.js")));
 
     assert("Phase 6: dist/umd.js exists",
-      existsSync(join(dist, "markdown-renderer.umd.js")));
+      existsSync(join(dist, "md-render.umd.js")));
 
     assert("Phase 6: dist/umd.min.js exists",
-      existsSync(join(dist, "markdown-renderer.umd.min.js")));
+      existsSync(join(dist, "md-render.umd.min.js")));
 
     assert("Phase 6: dist/iife.js exists",
-      existsSync(join(dist, "markdown-renderer.iife.js")));
+      existsSync(join(dist, "md-render.iife.js")));
 
     assert("Phase 6: dist/iife.min.js exists",
-      existsSync(join(dist, "markdown-renderer.iife.min.js")));
+      existsSync(join(dist, "md-render.iife.min.js")));
 
     assert("Phase 6: dist/css exists",
-      existsSync(join(dist, "markdown-renderer.css")));
+      existsSync(join(dist, "md-render.css")));
 
     assert("Phase 6: dist/min.css exists",
-      existsSync(join(dist, "markdown-renderer.min.css")));
+      existsSync(join(dist, "md-render.min.css")));
 
     // Size checks (minified should be smaller than unminified)
-    const esm = readFileSync(join(dist, "markdown-renderer.esm.js"), "utf8");
-    const esmMin = readFileSync(join(dist, "markdown-renderer.esm.min.js"), "utf8");
+    const esm = readFileSync(join(dist, "md-render.esm.js"), "utf8");
+    const esmMin = readFileSync(join(dist, "md-render.esm.min.js"), "utf8");
     assert("Phase 6: ESM min is smaller than unminified",
       esmMin.length < esm.length);
 
-    const css = readFileSync(join(dist, "markdown-renderer.css"), "utf8");
-    const cssMin = readFileSync(join(dist, "markdown-renderer.min.css"), "utf8");
+    const css = readFileSync(join(dist, "md-render.css"), "utf8");
+    const cssMin = readFileSync(join(dist, "md-render.min.css"), "utf8");
     assert("Phase 6: CSS min is smaller than unminified",
       cssMin.length < css.length);
   } else {

@@ -70,30 +70,30 @@ const builds = [
   {
     name: "ESM",
     format: "esm",
-    outfile: resolve(DIST_DIR, "markdown-renderer.esm.js"),
+    outfile: resolve(DIST_DIR, "md-render.esm.js"),
     globalName: undefined,
   },
   {
     name: "ESM (min)",
     format: "esm",
     minify: true,
-    outfile: resolve(DIST_DIR, "markdown-renderer.esm.min.js"),
+    outfile: resolve(DIST_DIR, "md-render.esm.min.js"),
     globalName: undefined,
   },
   {
     name: "IIFE",
     format: "iife",
       entryPoint: resolve("src/iife-entry.js"),
-    outfile: resolve(DIST_DIR, "markdown-renderer.iife.js"),
+    outfile: resolve(DIST_DIR, "md-render.iife.js"),
     globalName: "MarkdownRenderer",
-    banner: { js: "/* markdown-renderer IIFE — exposes window.MarkdownRenderer */\n" },
+    banner: { js: "/* md-render IIFE — exposes window.MarkdownRenderer */\n" },
   },
   {
     name: "IIFE (min)",
       entryPoint: resolve("src/iife-entry.js"),
     format: "iife",
     minify: true,
-    outfile: resolve(DIST_DIR, "markdown-renderer.iife.min.js"),
+    outfile: resolve(DIST_DIR, "md-render.iife.min.js"),
     globalName: "MarkdownRenderer",
   },
 ];
@@ -122,8 +122,8 @@ for (const build of builds) {
 console.log("  Building UMD...");
 for (const minified of [false, true]) {
   const suffix = minified ? ".min" : "";
-  const iifeFile = resolve(DIST_DIR, `markdown-renderer.iife${suffix}.js`);
-  const umdFile = resolve(DIST_DIR, `markdown-renderer.umd${suffix}.js`);
+  const iifeFile = resolve(DIST_DIR, `md-render.iife${suffix}.js`);
+  const umdFile = resolve(DIST_DIR, `md-render.umd${suffix}.js`);
 
   const iifeBody = readFileSync(iifeFile, "utf8");
   const umdCode = UMD_WRAPPER.replace("__IIFE_BODY__", iifeBody);
@@ -136,14 +136,14 @@ for (const minified of [false, true]) {
 /* ── Step 3: Size Summary ── */
 console.log("\n=== Build Output ===");
 const files = [
-  "markdown-renderer.esm.js",
-  "markdown-renderer.esm.min.js",
-  "markdown-renderer.umd.js",
-  "markdown-renderer.umd.min.js",
-  "markdown-renderer.iife.js",
-  "markdown-renderer.iife.min.js",
-  "markdown-renderer.css",
-  "markdown-renderer.min.css",
+  "md-render.esm.js",
+  "md-render.esm.min.js",
+  "md-render.umd.js",
+  "md-render.umd.min.js",
+  "md-render.iife.js",
+  "md-render.iife.min.js",
+  "md-render.css",
+  "md-render.min.css",
 ];
 
 const sep1 = "┌" + "─".repeat(44) + "┐";
