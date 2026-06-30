@@ -13,6 +13,13 @@ graph TD
         C["src/core/markdown-it-instance.js<br/>Factory: createMarkdownIt()"]
     end
 
+    subgraph Plugins
+        I["src/plugins/registry.js<br/>PluginRegistry"]
+        J["src/plugins/default-pack.js<br/>getDefaultPack()"]
+        K["src/plugins/lazy-loader.js<br/>LazyLoader"]
+        L["src/plugins/bundled/<br/>8 plugin wrappers"]
+    end
+
     subgraph Rules
         D["src/core/rules/heading-ids.js<br/>id='slug' on headings"]
         E["src/core/rules/callouts.js<br/>Obsidian callouts"]
@@ -24,7 +31,13 @@ graph TD
     A --> B
     A --> C
     A --> H
+    A --> I
+    A --> J
+    A --> K
+    A --> L
     B --> C
+    B --> I
+    I --> L
     B --> D
     B --> E
     B --> F
@@ -84,3 +97,9 @@ Wikilinks emit proper link tokens (not raw HTML) because:
 - **No regex for callout detection**: The callout parser uses `indexOf` for `[!type]` detection, which is faster and more debuggable than regex on long strings.
 - **Single-pass callout rendering**: By replacing the inline token with `html_block`, we avoid rendering the blockquote content twice (once as blockquote, once as callout).
 - **Deterministic slugify**: The heading slug function is idempotent — running it twice produces the same result, enabling reliable anchor links.
+
+## Plugin System
+
+The plugin layer (Phase 3) sits between markdown-it and the custom rules.
+For the full plugin API, LazyPlugin interface, and LazyLoader documentation,
+see [docs/plugin-system.md](plugin-system.md).
