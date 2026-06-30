@@ -10,7 +10,7 @@
  */
 
 /* Inline code */
-.markdown-renderer code {
+.md-render code {
   font-family: var(--md-font-mono);
   font-size: var(--md-font-size-sm);
   background: var(--md-code-bg);
@@ -21,7 +21,7 @@
 }
 
 /* Fenced code block container */
-.markdown-renderer pre {
+.md-render pre {
   margin: var(--md-space-md) 0;
   padding: var(--md-space-md);
   background: var(--md-code-bg);
@@ -30,7 +30,7 @@
   overflow-x: auto;
 }
 
-.markdown-renderer pre code {
+.md-render pre code {
   background: none;
   padding: 0;
   border: none;
@@ -39,7 +39,7 @@
 }
 
 /* Code block header with language label */
-.markdown-renderer .code-block-header {
+.md-render .code-block-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -53,7 +53,7 @@
   font-family: var(--md-font-mono);
 }
 
-.markdown-renderer .code-block-header + pre {
+.md-render .code-block-header + pre {
   margin-top: 0;
   border-radius: 0 0 var(--md-radius-md) var(--md-radius-md);
 }

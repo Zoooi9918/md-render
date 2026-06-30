@@ -1,6 +1,6 @@
 # CI — Test + Build matrix
 # Triggers on every push to main and every PR to main
-# Runs on Node 18 and Node 20 (both LTS)
+# Runs on Node 20 and Node 22 (both LTS)
 
 name: CI
 
@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [18, 20]
+        node-version: [20, 22]
         os: [ubuntu-latest]
 
     runs-on: ${{ matrix.os }}
@@ -25,11 +25,11 @@ jobs:
     steps:
       # 1. Checkout the repo
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # 2. Setup Node.js
       - name: Setup Node ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
@@ -48,7 +48,7 @@ jobs:
 
       # 6. Upload dist artifact for inspection
       - name: Upload dist artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: dist-node${{ matrix.node-version }}
           path: dist/

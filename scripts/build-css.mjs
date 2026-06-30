@@ -3,8 +3,8 @@
  *
  * Reads src/styles/index.css, resolves @import statements,
  * concatenates all modules in order, and writes:
- *   dist/markdown-renderer.css       (unminified, with banner)
- *   dist/markdown-renderer.min.css   (csso-minified)
+ *   dist/md-render.css       (unminified, with banner)
+ *   dist/md-render.min.css   (csso-minified)
  *   src/styles/inline.generated.js    (baked CSS string for JS bundle)
  *
  * Run: node scripts/build-css.mjs
@@ -20,7 +20,7 @@ const INDEX_CSS = resolve(SRC_DIR, "index.css");
 
 /** License banner prepended to the unminified CSS bundle. */
 const BANNER = `/**
- * markdown-renderer v${readFileSync(resolve("package.json"), "utf8").match(/"version":\s*"([^"]+)"/)[1]}
+ * md-render v${readFileSync(resolve("package.json"), "utf8").match(/"version":\s*"([^"]+)"/)[1]}
  * CSS bundle — concatenated from src/styles/
  * License: MIT
  */
@@ -71,18 +71,18 @@ const unminified = BANNER + cssText;
 mkdirSync(DIST_DIR, { recursive: true });
 
 // Write unminified
-writeFileSync(resolve(DIST_DIR, "markdown-renderer.css"), unminified, "utf8");
-console.log("build-css: wrote dist/markdown-renderer.css");
+writeFileSync(resolve(DIST_DIR, "md-render.css"), unminified, "utf8");
+console.log("build-css: wrote dist/md-render.css");
 
 // Write minified
 try {
   const result = minify(cssText);
   writeFileSync(
-    resolve(DIST_DIR, "markdown-renderer.min.css"),
+    resolve(DIST_DIR, "md-render.min.css"),
     result.css,
     "utf8"
   );
-  console.log("build-css: wrote dist/markdown-renderer.min.css");
+  console.log("build-css: wrote dist/md-render.min.css");
 } catch (err) {
   console.error("build-css: csso minification failed:", err.message);
   process.exit(1);
@@ -100,6 +100,6 @@ console.log("build-css: wrote src/styles/inline.generated.js");
 
 // Print sizes
 const { statSync } = await import("node:fs");
-const cssSize = statSync(resolve(DIST_DIR, "markdown-renderer.css")).size;
-const minSize = statSync(resolve(DIST_DIR, "markdown-renderer.min.css")).size;
+const cssSize = statSync(resolve(DIST_DIR, "md-render.css")).size;
+const minSize = statSync(resolve(DIST_DIR, "md-render.min.css")).size;
 console.log(`build-css: ${cssSize.toLocaleString()} B unminified, ${minSize.toLocaleString()} B minified`);

@@ -7,7 +7,7 @@
  *   --md-radius-md
  */
 
-.markdown-renderer {
+.md-render {
   font-family: var(--md-font-base);
   font-size: var(--md-font-size-base);
   line-height: var(--md-line-height-base);
@@ -16,12 +16,12 @@
   word-wrap: break-word;
 }
 
-.markdown-renderer h1,
-.markdown-renderer h2,
-.markdown-renderer h3,
-.markdown-renderer h4,
-.markdown-renderer h5,
-.markdown-renderer h6 {
+.md-render h1,
+.md-render h2,
+.md-render h3,
+.md-render h4,
+.md-render h5,
+.md-render h6 {
   margin-top: var(--md-space-lg);
   margin-bottom: var(--md-space-sm);
   font-weight: 600;
@@ -29,43 +29,43 @@
   color: var(--md-fg);
 }
 
-.markdown-renderer h1 { font-size: 1.75em; }
-.markdown-renderer h2 { font-size: 1.5em; }
-.markdown-renderer h3 { font-size: 1.25em; }
-.markdown-renderer h4 { font-size: 1.1em; }
-.markdown-renderer h5 { font-size: 1em; }
-.markdown-renderer h6 { font-size: 0.9em; color: var(--md-border-strong); }
+.md-render h1 { font-size: 1.75em; }
+.md-render h2 { font-size: 1.5em; }
+.md-render h3 { font-size: 1.25em; }
+.md-render h4 { font-size: 1.1em; }
+.md-render h5 { font-size: 1em; }
+.md-render h6 { font-size: 0.9em; color: var(--md-border-strong); }
 
-.markdown-renderer p {
+.md-render p {
   margin-top: 0;
   margin-bottom: var(--md-space-md);
 }
 
-.markdown-renderer a {
+.md-render a {
   color: var(--md-link);
   text-decoration: none;
 }
 
-.markdown-renderer a:hover {
+.md-render a:hover {
   color: var(--md-link-hover);
   text-decoration: underline;
 }
 
-.markdown-renderer strong { font-weight: 600; }
-.markdown-renderer em { font-style: italic; }
+.md-render strong { font-weight: 600; }
+.md-render em { font-style: italic; }
 
-.markdown-renderer ul,
-.markdown-renderer ol {
+.md-render ul,
+.md-render ol {
   margin-top: 0;
   margin-bottom: var(--md-space-md);
   padding-left: var(--md-space-lg);
 }
 
-.markdown-renderer li { margin-bottom: var(--md-space-xs); }
-.markdown-renderer li > ul,
-.markdown-renderer li > ol { margin-bottom: var(--md-space-xs); }
+.md-render li { margin-bottom: var(--md-space-xs); }
+.md-render li > ul,
+.md-render li > ol { margin-bottom: var(--md-space-xs); }
 
-.markdown-renderer blockquote {
+.md-render blockquote {
   margin: var(--md-space-md) 0;
   padding: var(--md-space-sm) var(--md-space-md);
   border-left: 4px solid var(--md-blockquote-border);
@@ -73,39 +73,39 @@
   border-radius: var(--md-radius-md);
 }
 
-.markdown-renderer blockquote p:last-child { margin-bottom: 0; }
+.md-render blockquote p:last-child { margin-bottom: 0; }
 
-.markdown-renderer hr {
+.md-render hr {
   height: 2px;
   margin: var(--md-space-lg) 0;
   border: none;
   background: var(--md-border);
 }
 
-.markdown-renderer table {
+.md-render table {
   width: 100%;
   margin-bottom: var(--md-space-md);
   border-collapse: collapse;
   border-spacing: 0;
 }
 
-.markdown-renderer th,
-.markdown-renderer td {
+.md-render th,
+.md-render td {
   padding: var(--md-space-sm) var(--md-space-md);
   border: 1px solid var(--md-border);
   text-align: left;
 }
 
-.markdown-renderer th {
+.md-render th {
   background: var(--md-table-header-bg);
   font-weight: 600;
 }
 
-.markdown-renderer tr:nth-child(even) {
+.md-render tr:nth-child(even) {
   background: var(--md-table-stripe-bg);
 }
 
-.markdown-renderer img {
+.md-render img {
   max-width: 100%;
   height: auto;
   border-radius: var(--md-radius-md);

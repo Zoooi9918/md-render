@@ -66,7 +66,7 @@
         render();
       })
       .catch(function () {
-        editor.value = "# markdown-renderer\n\nStart typing markdown here...";
+        editor.value = "# md-render\n\nStart typing markdown here...";
         render();
       });
   })();

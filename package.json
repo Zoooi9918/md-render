@@ -1,15 +1,15 @@
 {
-  "name": "markdown-renderer",
-  "version": "0.0.1",
+  "name": "md-render",
+  "version": "0.1.0",
   "description": "A performance-first markdown-to-HTML renderer with Obsidian-flavored extensions, distributed via CDN.",
-  "main": "dist/markdown-renderer.umd.js",
-  "module": "dist/markdown-renderer.esm.js",
-  "browser": "dist/markdown-renderer.iife.js",
-  "unpkg": "dist/markdown-renderer.umd.min.js",
-  "jsdelivr": "dist/markdown-renderer.umd.min.js",
+  "main": "dist/md-render.umd.js",
+  "module": "dist/md-render.esm.js",
+  "browser": "dist/md-render.iife.js",
+  "unpkg": "dist/md-render.umd.min.js",
+  "jsdelivr": "dist/md-render.umd.min.js",
   "type": "module",
   "license": "MIT",
-  "repository": "https://github.com/Zoooi9918/markdown-renderer",
+  "repository": "https://github.com/Zoooi9918/md-render",
   "keywords": [
     "markdown",
     "renderer",
@@ -26,12 +26,12 @@
   ],
   "exports": {
     ".": {
-      "import": "./dist/markdown-renderer.esm.js",
-      "require": "./dist/markdown-renderer.umd.js",
-      "default": "./dist/markdown-renderer.iife.js"
+      "import": "./dist/md-render.esm.js",
+      "require": "./dist/md-render.umd.js",
+      "default": "./dist/md-render.iife.js"
     },
-    "./css": "./dist/markdown-renderer.css",
-    "./css/min": "./dist/markdown-renderer.min.css"
+    "./css": "./dist/md-render.css",
+    "./css/min": "./dist/md-render.min.css"
   },
   "scripts": {
     "build": "node scripts/build.mjs",
@@ -56,5 +56,7 @@
     "csso": "^5.0.5",
     "esbuild": "^0.24.2",
     "rimraf": "^5.0.10"
-  }
+  },
+  "homepage": "https://Zoooi9918.github.io/md-render/",
+  "bugs": "https://github.com/Zoooi9918/md-render/issues"
 }

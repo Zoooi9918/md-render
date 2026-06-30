@@ -5,53 +5,53 @@
  */
 
 @media print {
-  .markdown-renderer {
+  .md-render {
     font-size: 12pt;
     line-height: 1.4;
     color: #000;
     background: #fff;
   }
 
-  .markdown-renderer a {
+  .md-render a {
     color: #000;
     text-decoration: underline;
   }
 
-  .markdown-renderer a[href^="http"]::after {
+  .md-render a[href^="http"]::after {
     content: " (" attr(href) ")";
     font-size: 9pt;
     color: #666;
   }
 
-  .markdown-renderer pre,
-  .markdown-renderer .code-block-header {
+  .md-render pre,
+  .md-render .code-block-header {
     border: 1px solid #ccc;
     background: #f9f9f9 !important;
     page-break-inside: avoid;
   }
 
-  .markdown-renderer table {
+  .md-render table {
     page-break-inside: auto;
   }
 
-  .markdown-renderer tr {
+  .md-render tr {
     page-break-inside: avoid;
   }
 
-  .markdown-renderer img,
-  .markdown-renderer pre {
+  .md-render img,
+  .md-render pre {
     page-break-inside: avoid;
   }
 
-  .markdown-renderer .callout {
+  .md-render .callout {
     page-break-inside: avoid;
     border-left: 2px solid #999;
     background: #f9f9f9 !important;
   }
 
   /* Hide UI chrome */
-  .markdown-renderer .callout-title::after,
-  .markdown-renderer .code-block-header {
+  .md-render .callout-title::after,
+  .md-render .code-block-header {
     display: none;
   }
 }

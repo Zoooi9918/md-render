@@ -1,12 +1,12 @@
 /**
  * tokens.css — CSS custom properties (light theme defaults)
  *
- * All themable values for markdown-renderer.
+ * All themable values for md-render.
  * Override any token to customize the appearance.
  * Dark theme overrides live in tokens-dark.css.
  */
 
-.markdown-renderer {
+.md-render {
   /* Colors — text */
   --md-bg: #ffffff;
   --md-fg: #1f2328;

@@ -1,8 +1,8 @@
 /**
- * index.css — Master stylesheet for markdown-renderer
+ * index.css — Master stylesheet for md-render
  *
  * Imports all CSS modules in dependency order.
- * This file is the source for dist/markdown-renderer.css.
+ * This file is the source for dist/md-render.css.
  */
 
 /* 0. Tokens (light defaults first, then dark overrides) */

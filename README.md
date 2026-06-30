@@ -1,11 +1,11 @@
-# markdown-renderer
+# md-render
 
 > A performance-first markdown-to-HTML renderer with Obsidian-flavored extensions, distributed via CDN.
 
-[![CI](https://github.com/Zoooi9918/markdown-renderer/actions/workflows/ci.yml/badge.svg)](https://github.com/Zoooi9918/markdown-renderer/actions/workflows/ci.yml)
+[![CI](https://github.com/Zoooi9918/md-render/actions/workflows/ci.yml/badge.svg)](https://github.com/Zoooi9918/md-render/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Bundle Size](https://img.shields.io/badge/UMD%20min-256%20KB-lightgrey)](https://github.com/Zoooi9918/markdown-renderer)
-[![CSS Size](https://img.shields.io/badge/CSS%20min-17%20KB-lightgrey)](https://github.com/Zoooi9918/markdown-renderer)
+[![Bundle Size](https://img.shields.io/badge/UMD%20min-256%20KB-lightgrey)](https://github.com/Zoooi9918/md-render)
+[![CSS Size](https://img.shields.io/badge/CSS%20min-17%20KB-lightgrey)](https://github.com/Zoooi9918/md-render)
 
 ## Why
 
@@ -18,8 +18,8 @@ Unlike `markdown-it` (Node-centric), `marked` (no plugin ecosystem), or `remark`
 ### CDN (one-tag inclusion)
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/markdown-renderer@latest/dist/markdown-renderer.umd.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-renderer@latest/dist/markdown-renderer.min.css">
+<script src="https://cdn.jsdelivr.net/gh/Zoooi9918/md-render@v0.1.0/dist/md-render.umd.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zoooi9918/md-render@v0.1.0/dist/md-render.min.css">
 <script>
   const renderer = new MarkdownRenderer();
   document.getElementById("output").innerHTML = renderer.render("# Hello");
@@ -29,12 +29,12 @@ Unlike `markdown-it` (Node-centric), `marked` (no plugin ecosystem), or `remark`
 ### npm install
 
 ```bash
-npm install markdown-renderer
+npm install md-render
 ```
 
 ```js
-import { MarkdownRenderer } from "markdown-renderer";
-import "markdown-renderer/css/min";
+import { MarkdownRenderer } from "md-render";
+import "md-render/css/min";
 
 const renderer = new MarkdownRenderer();
 document.getElementById("output").innerHTML = renderer.render("# Hello");
@@ -42,11 +42,11 @@ document.getElementById("output").innerHTML = renderer.render("# Hello");
 
 ### Self-hosted
 
-Download the latest release artifacts from [GitHub Releases](https://github.com/Zoooi9918/markdown-renderer/releases), place `dist/` next to your HTML, and reference locally:
+Download the latest release artifacts from [GitHub Releases](https://github.com/Zoooi9918/md-render/releases), place `dist/` next to your HTML, and reference locally:
 
 ```html
-<script src="dist/markdown-renderer.umd.min.js"></script>
-<link rel="stylesheet" href="dist/markdown-renderer.min.css">
+<script src="dist/md-render.umd.min.js"></script>
+<link rel="stylesheet" href="dist/md-render.min.css">
 ```
 
 ## Features
@@ -157,7 +157,7 @@ Namespace for lazy-loaded plugin factories: `mermaid`, `katex`, `highlight`.
 ### Default export
 
 ```js
-import render from "markdown-renderer";
+import render from "md-render";
 const html = render("# Hello");
 ```
 
@@ -193,7 +193,7 @@ Measured on Node.js v20, M2 MacBook Air:
 
 ## Examples
 
-- [Live demo](https://Zoooi9918.github.io/markdown-renderer/)
+- [Live demo](https://Zoooi9918.github.io/md-render/)
 - [examples/dev-preview.html](examples/dev-preview.html) — in-repo development preview
 - [examples/test-content.md](examples/test-content.md) — sample markdown
 

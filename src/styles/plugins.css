@@ -6,37 +6,37 @@
  */
 
 /* Mark / highlight */
-.markdown-renderer mark {
+.md-render mark {
   background: var(--md-mark-bg);
   padding: 1px 4px;
   border-radius: 2px;
 }
 
 /* Subscript / Superscript */
-.markdown-renderer sub,
-.markdown-renderer sup {
+.md-render sub,
+.md-render sup {
   font-size: 75%;
   line-height: 0;
   position: relative;
 }
 
-.markdown-renderer sub { bottom: -0.25em; }
-.markdown-renderer sup { top: -0.5em; }
+.md-render sub { bottom: -0.25em; }
+.md-render sup { top: -0.5em; }
 
 /* Inserted text */
-.markdown-renderer ins {
+.md-render ins {
   text-decoration: none;
   border-bottom: 2px solid var(--md-link);
 }
 
 /* Deleted text */
-.markdown-renderer del {
+.md-render del {
   text-decoration: line-through;
   color: var(--md-border-strong);
 }
 
 /* Keyboard */
-.markdown-renderer kbd {
+.md-render kbd {
   display: inline-block;
   padding: 2px 6px;
   font-family: var(--md-font-mono);
@@ -48,60 +48,60 @@
 }
 
 /* Footnote */
-.markdown-renderer .footnotes {
+.md-render .footnotes {
   margin-top: var(--md-space-lg);
   padding-top: var(--md-space-md);
   border-top: 1px solid var(--md-border);
   font-size: var(--md-font-size-sm);
 }
 
-.markdown-renderer .footnotes ol {
+.md-render .footnotes ol {
   padding-left: var(--md-space-md);
 }
 
-.markdown-renderer .footnotes li { margin-bottom: var(--md-space-xs); }
+.md-render .footnotes li { margin-bottom: var(--md-space-xs); }
 
-.markdown-renderer a.footnote-ref,
-.markdown-renderer a.footnote-backlink {
+.md-render a.footnote-ref,
+.md-render a.footnote-backlink {
   font-size: var(--md-font-size-sm);
   color: var(--md-link);
   text-decoration: none;
 }
 
-.markdown-renderer a.footnote-ref:hover,
-.markdown-renderer a.footnote-backlink:hover {
+.md-render a.footnote-ref:hover,
+.md-render a.footnote-backlink:hover {
   text-decoration: underline;
 }
 
 /* Task list */
-.markdown-renderer .task-list-item {
+.md-render .task-list-item {
   list-style: none;
   margin-left: calc(-1 * var(--md-space-lg));
   padding-left: var(--md-space-lg);
 }
 
-.markdown-renderer .task-list-item input[type="checkbox"] {
+.md-render .task-list-item input[type="checkbox"] {
   margin-right: var(--md-space-sm);
   vertical-align: middle;
 }
 
-.markdown-renderer .task-list-item.task-list-done {
+.md-render .task-list-item.task-list-done {
   text-decoration: line-through;
   color: var(--md-border-strong);
 }
 
 /* Definition list */
-.markdown-renderer dl {
+.md-render dl {
   margin-top: 0;
   margin-bottom: var(--md-space-md);
 }
 
-.markdown-renderer dt {
+.md-render dt {
   font-weight: 600;
   margin-top: var(--md-space-sm);
 }
 
-.markdown-renderer dd {
+.md-render dd {
   margin-left: var(--md-space-md);
   color: var(--md-fg);
 }

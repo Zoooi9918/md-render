@@ -7,7 +7,7 @@
  */
 
 /* Wikilink — styled as a pill */
-.markdown-renderer a.wikilink {
+.md-render a.wikilink {
   display: inline-block;
   padding: 2px 8px;
   margin: 0 2px;
@@ -20,14 +20,14 @@
   font-weight: 500;
 }
 
-.markdown-renderer a.wikilink:hover {
+.md-render a.wikilink:hover {
   background: var(--md-link);
   color: var(--md-bg);
   border-color: var(--md-link);
 }
 
 /* Embed link — card-style preview link */
-.markdown-renderer a.embed-link {
+.md-render a.embed-link {
   display: block;
   padding: var(--md-space-sm) var(--md-space-md);
   margin: var(--md-space-md) 0;
@@ -39,17 +39,17 @@
   transition: box-shadow 0.15s ease;
 }
 
-.markdown-renderer a.embed-link:hover {
+.md-render a.embed-link:hover {
   box-shadow: var(--md-shadow-md);
 }
 
-.markdown-renderer a.embed-link .embed-title {
+.md-render a.embed-link .embed-title {
   font-weight: 600;
   color: var(--md-link);
   font-size: var(--md-font-size-sm);
 }
 
-.markdown-renderer a.embed-link .embed-desc {
+.md-render a.embed-link .embed-desc {
   color: var(--md-fg);
   font-size: var(--md-font-size-sm);
   margin-top: 2px;

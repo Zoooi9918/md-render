@@ -1,12 +1,12 @@
 /**
  * tokens-dark.css — Dark theme overrides
  *
- * Applied via .markdown-renderer[data-theme="dark"].
- * Auto theme: .markdown-renderer[data-theme="auto"] inside
+ * Applied via .md-render[data-theme="dark"].
+ * Auto theme: .md-render[data-theme="auto"] inside
  * @media (prefers-color-scheme: dark) applies the same overrides.
  */
 
-.markdown-renderer[data-theme="dark"] {
+.md-render[data-theme="dark"] {
   --md-bg: #0d1117;
   --md-fg: #c9d1d9;
   --md-link: #58a6ff;
@@ -50,7 +50,7 @@
 
 /* Auto theme bridge — respects OS preference */
 @media (prefers-color-scheme: dark) {
-  .markdown-renderer[data-theme="auto"] {
+  .md-render[data-theme="auto"] {
     --md-bg: #0d1117;
     --md-fg: #c9d1d9;
     --md-link: #58a6ff;
