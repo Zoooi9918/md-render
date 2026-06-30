@@ -2,8 +2,11 @@
   "name": "markdown-renderer",
   "version": "0.0.1",
   "description": "A performance-first markdown-to-HTML renderer with Obsidian-flavored extensions, distributed via CDN.",
-  "main": "dist/markdown-renderer.js",
+  "main": "dist/markdown-renderer.umd.js",
   "module": "dist/markdown-renderer.esm.js",
+  "browser": "dist/markdown-renderer.iife.js",
+  "unpkg": "dist/markdown-renderer.umd.min.js",
+  "jsdelivr": "dist/markdown-renderer.umd.min.js",
   "type": "module",
   "license": "MIT",
   "repository": "https://github.com/Zoooi9918/markdown-renderer",
@@ -15,10 +18,28 @@
     "cdn",
     "markdown-it"
   ],
+  "files": [
+    "dist/",
+    "src/",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/markdown-renderer.esm.js",
+      "require": "./dist/markdown-renderer.umd.js",
+      "default": "./dist/markdown-renderer.iife.js"
+    },
+    "./css": "./dist/markdown-renderer.css",
+    "./css/min": "./dist/markdown-renderer.min.css"
+  },
   "scripts": {
-    "build": "echo build TBD in Phase 6",
-    "dev": "echo dev server TBD in Phase 6",
-    "test": "echo test runner TBD in Phase 6"
+    "build": "node scripts/build.mjs",
+    "build:css": "node scripts/build-css.mjs",
+    "clean": "rimraf dist src/styles/inline.generated.js",
+    "test": "node tests/smoke.mjs",
+    "prepublishOnly": "npm run clean && npm run build && npm test",
+    "dev": "echo Use Live Server on examples/dev-preview.html"
   },
   "dependencies": {
     "markdown-it": "^14.2.0",
@@ -30,5 +51,10 @@
     "markdown-it-sub": "^2.0.0",
     "markdown-it-sup": "^2.0.0",
     "markdown-it-task-lists": "^2.1.1"
+  },
+  "devDependencies": {
+    "csso": "^5.0.5",
+    "esbuild": "^0.24.2",
+    "rimraf": "^5.0.10"
   }
 }
