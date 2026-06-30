@@ -1,0 +1,23 @@
+{
+  "name": "markdown-renderer",
+  "version": "0.0.1",
+  "description": "A performance-first markdown-to-HTML renderer with Obsidian-flavored extensions, distributed via CDN.",
+  "main": "dist/markdown-renderer.js",
+  "module": "dist/markdown-renderer.esm.js",
+  "type": "module",
+  "license": "MIT",
+  "repository": "https://github.com/Zoooi9918/markdown-renderer",
+  "keywords": [
+    "markdown",
+    "renderer",
+    "html",
+    "obsidian",
+    "cdn",
+    "markdown-it"
+  ],
+  "scripts": {
+    "build": "echo build TBD in Phase 6",
+    "dev": "echo dev server TBD in Phase 6",
+    "test": "echo test runner TBD in Phase 6"
+  }
+}

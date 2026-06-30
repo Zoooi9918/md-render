@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/*
+!dist/.gitkeep
+
+# OS
+.DS_Store
+
+# Logs
+*.log
+
+# Environment
+.env*
+
+# IDE
+.vscode/
+.idea/
