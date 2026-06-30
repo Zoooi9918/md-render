@@ -3,30 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>markdown-renderer — Dev Preview (Phase 2)</title>
+  <title>markdown-renderer — Dev Preview (Phase 3)</title>
   <!--
-    Dev Preview — Phase 2 Smoke Test
+    Dev Preview — Phase 3 Smoke Test
     =================================
     This page loads the renderer as an ES module and renders test-content.md.
     It is for developer verification ONLY — not for end users.
 
     Loading strategy:
-    - markdown-it is loaded from node_modules via a CDN (esm.sh) since
-      bare ES module imports from node_modules don't work in the browser
+    - markdown-it and bundled plugins are loaded from node_modules via a CDN (esm.sh)
+      since bare ES module imports from node_modules don't work in the browser
       without a bundler. The CDN resolves the CJS→ESM transformation.
     - The local src/index.js is loaded as a relative ES module.
   -->
   <script type="importmap">
   {
     "imports": {
-      "markdown-it": "https://esm.sh/markdown-it@14"
+      "markdown-it": "https://esm.sh/markdown-it@14",
+      "markdown-it-mark": "https://esm.sh/markdown-it-mark@4",
+      "markdown-it-sub": "https://esm.sh/markdown-it-sub@2",
+      "markdown-it-sup": "https://esm.sh/markdown-it-sup@2",
+      "markdown-it-ins": "https://esm.sh/markdown-it-ins@4",
+      "markdown-it-emoji": "https://esm.sh/markdown-it-emoji@3",
+      "markdown-it-footnote": "https://esm.sh/markdown-it-footnote@3",
+      "markdown-it-task-lists": "https://esm.sh/markdown-it-task-lists@2",
+      "markdown-it-deflist": "https://esm.sh/markdown-it-deflist@3",
+      "strip-markdown": "https://esm.sh/strip-markdown@5"
     }
   }
   </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; color: #1a1a2e; background: #f8f9fa; padding: 2rem; max-width: 900px; margin: 0 auto; }
-    h1.page-title { font-size: 1.5rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #dee2e6; }
+    h1.page-title { font-size: 1.5rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #dee2e6; display: flex; align-items: center; gap: 0.5rem; }
+    .badge { font-size: 0.75rem; background: #0066ff; color: #fff; padding: 0.15rem 0.5rem; border-radius: 999px; font-weight: 600; }
+    #plugin-status { background: #f4f4f5; padding: 1rem; border-radius: 6px; margin-bottom: 1rem; font-size: 0.85rem; overflow-x: auto; }
     article { background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
     article h1, article h2, article h3 { margin-top: 1.5rem; margin-bottom: 0.5rem; }
     article h1 { border-bottom: 1px solid #eee; padding-bottom: 0.3rem; }
@@ -48,15 +59,12 @@
   </style>
 </head>
 <body>
-  <h1 class="page-title">🧪 Dev Preview — Phase 2 Core Renderer</h1>
+  <h1 class="page-title">🧪 Dev Preview — Phase 3 Plugin Layer <span class="badge">PLUGIN LAYER ACTIVE</span></h1>
+  <pre id="plugin-status">Loading plugins...</pre>
   <article id="output"></article>
   <div id="error"></div>
 
   <script type="module">
-    // Load markdown-it from CDN (esm.sh handles CJS→ESM transformation)
-    // Then load our local renderer which imports from markdown-it
-    // We need to configure the import map so "markdown-it" resolves to the CDN
-
     import { MarkdownRenderer } from "../../src/index.js";
 
     try {
@@ -65,7 +73,7 @@
       if (!response.ok) throw new Error(`Failed to load test-content.md: ${response.status}`);
       const markdown = await response.text();
 
-      // Render with all rules enabled
+      // Render with all rules enabled (default pack active)
       const renderer = new MarkdownRenderer({
         rules: {
           headingIds: true,
@@ -74,6 +82,11 @@
           obsidianEmbed: true,
         },
       });
+
+      // Show plugin status
+      const pluginList = renderer.getRegistry().list();
+      document.getElementById("plugin-status").textContent =
+        JSON.stringify(pluginList, null, 2);
 
       const html = renderer.render(markdown);
       document.getElementById("output").innerHTML = html;
