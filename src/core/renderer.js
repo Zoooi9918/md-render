@@ -27,6 +27,9 @@ const DEFAULT_RULES = Object.freeze({
   wikilinks: true,
   obsidianEmbed: true,
 });
+/** Default theme */
+const DEFAULT_THEME = "light";
+const DEFAULT_CONTAINER_CLASS = "markdown-renderer";
 
 /**
  * High-performance markdown-to-HTML renderer with Obsidian-flavored extensions.
@@ -224,7 +227,13 @@ export class MarkdownRenderer {
     }
 
     const html = await this.renderAsync(markdownString);
-    target.innerHTML = html;
+      // Wrap in themed container
+      const wrapper = document.createElement("div");
+      wrapper.className = this._containerClass;
+      wrapper.setAttribute("data-theme", this._theme);
+      wrapper.innerHTML = html;
+      target.innerHTML = "";
+      target.appendChild(wrapper);
 
     // Post-render hooks
     await this._postRender();

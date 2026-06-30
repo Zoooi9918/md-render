@@ -1,0 +1,93 @@
+/**
+ * tokens.css — CSS custom properties (light theme defaults)
+ *
+ * All themable values for markdown-renderer.
+ * Override any token to customize the appearance.
+ * Dark theme overrides live in tokens-dark.css.
+ */
+
+.markdown-renderer {
+  /* Colors — text */
+  --md-bg: #ffffff;
+  --md-fg: #1f2328;
+  --md-link: #0969da;
+  --md-link-hover: #0550ae;
+
+  /* Colors — borders */
+  --md-border: #d0d7de;
+  --md-border-strong: #6e7781;
+
+  /* Colors — code */
+  --md-code-bg: #f6f8fa;
+  --md-code-fg: #1f2328;
+  --md-code-border: #d0d7de;
+
+  /* Colors — blockquote */
+  --md-blockquote-bg: #f6f8fa;
+  --md-blockquote-border: #d0d7de;
+
+  /* Colors — mark */
+  --md-mark-bg: #fff8c5;
+
+  /* Colors — table */
+  --md-table-header-bg: #f6f8fa;
+  --md-table-stripe-bg: #fafbfc;
+
+  /* Colors — kbd */
+  --md-kbd-bg: #f6f8fa;
+  --md-kbd-border: #d0d7de;
+
+  /* Colors — callouts */
+  --md-callout-note-bg: #f0f4ff;
+  --md-callout-note-border: #0969da;
+  --md-callout-note-icon: #0969da;
+
+  --md-callout-tip-bg: #dafbe1;
+  --md-callout-tip-border: #1a7f37;
+  --md-callout-tip-icon: #1a7f37;
+
+  --md-callout-warning-bg: #fffbdd;
+  --md-callout-warning-border: #9a6700;
+  --md-callout-warning-icon: #9a6700;
+
+  --md-callout-danger-bg: #ffebe9;
+  --md-callout-danger-border: #cf222e;
+  --md-callout-danger-icon: #cf222e;
+
+  --md-callout-info-bg: #ddf4ff;
+  --md-callout-info-border: #0891b2;
+  --md-callout-info-icon: #0891b2;
+
+  --md-callout-success-bg: #dafbe1;
+  --md-callout-success-border: #1a7f37;
+  --md-callout-success-icon: #1a7f37;
+
+  --md-callout-question-bg: #f0f4ff;
+  --md-callout-question-border: #652d90;
+  --md-callout-question-icon: #652d90;
+
+  /* Typography */
+  --md-font-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --md-font-mono: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  --md-font-size-base: 16px;
+  --md-font-size-sm: 14px;
+  --md-font-size-lg: 20px;
+  --md-line-height-base: 1.6;
+  --md-line-height-tight: 1.3;
+
+  /* Spacing */
+  --md-space-xs: 4px;
+  --md-space-sm: 8px;
+  --md-space-md: 16px;
+  --md-space-lg: 24px;
+  --md-space-xl: 32px;
+
+  /* Radii */
+  --md-radius-sm: 4px;
+  --md-radius-md: 6px;
+  --md-radius-lg: 8px;
+
+  /* Shadows */
+  --md-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --md-shadow-md: 0 3px 8px rgba(0, 0, 0, 0.1);
+}

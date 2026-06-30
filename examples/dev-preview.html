@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>markdown-renderer — Dev Preview (Phase 4)</title>
+  <title>markdown-renderer — Dev Preview (Phase 5)</title>
+  <link rel="stylesheet" href="../dist/markdown-renderer.css">
   <script type="importmap">
   {
     "imports": {
@@ -26,34 +27,29 @@
     h1.page-title { font-size: 1.5rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #dee2e6; display: flex; align-items: center; gap: 0.5rem; }
     .badge { font-size: 0.75rem; background: #0066ff; color: #fff; padding: 0.15rem 0.5rem; border-radius: 999px; font-weight: 600; }
     .badge-lazy { background: #6f42c1; }
+    #theme-controls { display: flex; gap: 0.5rem; margin-bottom: 1rem; align-items: center; }
+    #theme-controls button { padding: 0.4rem 1rem; border: 1px solid #dee2e6; border-radius: 4px; background: #fff; cursor: pointer; font-size: 0.85rem; }
+    #theme-controls button.active { background: #0066ff; color: #fff; border-color: #0066ff; }
+    #theme-controls label { font-size: 0.85rem; font-weight: 600; margin-right: 0.5rem; }
     #plugin-status { background: #f4f4f5; padding: 1rem; border-radius: 6px; margin-bottom: 1rem; font-size: 0.85rem; overflow-x: auto; }
     #lazy-status { background: #f0f0ff; padding: 1rem; border-radius: 6px; margin-bottom: 1rem; font-size: 0.85rem; overflow-x: auto; }
     article { background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-    article h1, article h2, article h3 { margin-top: 1.5rem; margin-bottom: 0.5rem; }
-    article h1 { border-bottom: 1px solid #eee; padding-bottom: 0.3rem; }
-    article p { margin-bottom: 1rem; }
-    article pre { background: #f4f4f5; padding: 1rem; border-radius: 6px; overflow-x: auto; margin-bottom: 1rem; }
-    article code { background: #f4f4f5; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
-    article pre code { background: none; padding: 0; }
-    article blockquote { border-left: 4px solid #0066ff; padding: 0.5rem 1rem; margin: 1rem 0; background: #f0f4ff; }
-    article table { border-collapse: collapse; width: 100%; margin-bottom: 1rem; }
-    article th, article td { border: 1px solid #dee2e6; padding: 0.5rem; text-align: left; }
-    article th { background: #f8f9fa; }
-    article ul, article ol { margin-left: 2rem; margin-bottom: 1rem; }
-    article img { max-width: 100%; height: auto; }
-    article iframe { max-width: 100%; border: 1px solid #dee2e6; border-radius: 4px; }
-    article .callout { border: 1px solid #dee2e6; border-radius: 6px; padding: 0.75rem 1rem; margin: 1rem 0; }
-    article .callout-title { font-weight: 600; margin-bottom: 0.5rem; }
-    article .wikilink { color: #0066ff; text-decoration: underline; }
     #error { color: #dc3545; background: #f8d7da; padding: 1rem; border-radius: 6px; margin-top: 1rem; display: none; }
   </style>
 </head>
 <body>
   <h1 class="page-title">
-    🧪 Dev Preview — Phase 4 Lazy Loading
-    <span class="badge">PLUGIN LAYER ACTIVE</span>
-    <span class="badge badge-lazy">LAZY LOADING</span>
+    🧪 Dev Preview — Phase 5 Theming
+    <span class="badge">PLUGIN LAYER</span>
+    <span class="badge badge-lazy">LAZY</span>
+    <span class="badge" style="background:#198754">THEMES</span>
   </h1>
+  <div id="theme-controls">
+    <label>Theme:</label>
+    <button data-theme="light" class="active">Light</button>
+    <button data-theme="dark">Dark</button>
+    <button data-theme="auto">Auto</button>
+  </div>
   <pre id="plugin-status">Loading plugins...</pre>
   <pre id="lazy-status">Waiting for render...</pre>
   <article id="output"></article>
@@ -83,7 +79,10 @@
 
       // Async render with lazy loading
       const html = await renderer.renderAsync(markdown);
-      document.getElementById("output").innerHTML = html;
+      
+      // Wrap in themed container
+      const output = document.getElementById("output");
+      output.innerHTML = '<div class="markdown-renderer" data-theme="light">' + html + '</div>';
 
       // Post-render: mermaid
       if (renderer.getLoadedPlugins().includes("mermaid") &&
@@ -100,6 +99,18 @@
       const loaded = renderer.getLoadedPlugins();
       document.getElementById("lazy-status").textContent =
         JSON.stringify({ loaded, history }, null, 2);
+
+      // Theme switching
+      const wrapper = output.querySelector(".markdown-renderer");
+      const setTheme = (theme) => {
+        if (wrapper) wrapper.setAttribute("data-theme", theme);
+        document.querySelectorAll("#theme-controls button").forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.theme === theme);
+        });
+      };
+      document.querySelectorAll("#theme-controls button").forEach((btn) => {
+        btn.addEventListener("click", () => setTheme(btn.dataset.theme));
+      });
     } catch (err) {
       const errorEl = document.getElementById("error");
       errorEl.textContent = `Error: ${err.message}`;

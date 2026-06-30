@@ -1,0 +1,59 @@
+/**
+ * code.css — Code block scaffolding (inline + fenced)
+ *
+ * Tokens consumed: --md-code-bg, --md-code-fg, --md-code-border,
+ *   --md-space-*, --md-radius-md, --md-font-mono, --md-font-size-sm,
+ *   --md-border-strong
+ *
+ * Note: highlight.js injects its own CSS for .hljs token colors.
+ * This file only provides the container scaffolding.
+ */
+
+/* Inline code */
+.markdown-renderer code {
+  font-family: var(--md-font-mono);
+  font-size: var(--md-font-size-sm);
+  background: var(--md-code-bg);
+  color: var(--md-code-fg);
+  padding: 2px 6px;
+  border-radius: var(--md-radius-sm);
+  border: 1px solid var(--md-code-border);
+}
+
+/* Fenced code block container */
+.markdown-renderer pre {
+  margin: var(--md-space-md) 0;
+  padding: var(--md-space-md);
+  background: var(--md-code-bg);
+  border: 1px solid var(--md-code-border);
+  border-radius: var(--md-radius-md);
+  overflow-x: auto;
+}
+
+.markdown-renderer pre code {
+  background: none;
+  padding: 0;
+  border: none;
+  font-size: var(--md-font-size-sm);
+  line-height: var(--md-line-height-base);
+}
+
+/* Code block header with language label */
+.markdown-renderer .code-block-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--md-space-xs) var(--md-space-md);
+  background: var(--md-code-bg);
+  border: 1px solid var(--md-code-border);
+  border-bottom: none;
+  border-radius: var(--md-radius-md) var(--md-radius-md) 0 0;
+  font-size: var(--md-font-size-sm);
+  color: var(--md-border-strong);
+  font-family: var(--md-font-mono);
+}
+
+.markdown-renderer .code-block-header + pre {
+  margin-top: 0;
+  border-radius: 0 0 var(--md-radius-md) var(--md-radius-md);
+}

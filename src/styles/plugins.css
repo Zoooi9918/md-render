@@ -1,0 +1,107 @@
+/**
+ * plugins.css — Plugin element styles (mark, sub, sup, ins, del, kbd, footnote, task list, deflist)
+ *
+ * Tokens consumed: --md-mark-bg, --md-kbd-bg, --md-kbd-border,
+ *   --md-border, --md-space-*, --md-font-size-sm, --md-fg, --md-code-bg
+ */
+
+/* Mark / highlight */
+.markdown-renderer mark {
+  background: var(--md-mark-bg);
+  padding: 1px 4px;
+  border-radius: 2px;
+}
+
+/* Subscript / Superscript */
+.markdown-renderer sub,
+.markdown-renderer sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+}
+
+.markdown-renderer sub { bottom: -0.25em; }
+.markdown-renderer sup { top: -0.5em; }
+
+/* Inserted text */
+.markdown-renderer ins {
+  text-decoration: none;
+  border-bottom: 2px solid var(--md-link);
+}
+
+/* Deleted text */
+.markdown-renderer del {
+  text-decoration: line-through;
+  color: var(--md-border-strong);
+}
+
+/* Keyboard */
+.markdown-renderer kbd {
+  display: inline-block;
+  padding: 2px 6px;
+  font-family: var(--md-font-mono);
+  font-size: var(--md-font-size-sm);
+  background: var(--md-kbd-bg);
+  border: 1px solid var(--md-kbd-border);
+  border-radius: var(--md-radius-sm);
+  box-shadow: 0 1px 0 var(--md-border);
+}
+
+/* Footnote */
+.markdown-renderer .footnotes {
+  margin-top: var(--md-space-lg);
+  padding-top: var(--md-space-md);
+  border-top: 1px solid var(--md-border);
+  font-size: var(--md-font-size-sm);
+}
+
+.markdown-renderer .footnotes ol {
+  padding-left: var(--md-space-md);
+}
+
+.markdown-renderer .footnotes li { margin-bottom: var(--md-space-xs); }
+
+.markdown-renderer a.footnote-ref,
+.markdown-renderer a.footnote-backlink {
+  font-size: var(--md-font-size-sm);
+  color: var(--md-link);
+  text-decoration: none;
+}
+
+.markdown-renderer a.footnote-ref:hover,
+.markdown-renderer a.footnote-backlink:hover {
+  text-decoration: underline;
+}
+
+/* Task list */
+.markdown-renderer .task-list-item {
+  list-style: none;
+  margin-left: calc(-1 * var(--md-space-lg));
+  padding-left: var(--md-space-lg);
+}
+
+.markdown-renderer .task-list-item input[type="checkbox"] {
+  margin-right: var(--md-space-sm);
+  vertical-align: middle;
+}
+
+.markdown-renderer .task-list-item.task-list-done {
+  text-decoration: line-through;
+  color: var(--md-border-strong);
+}
+
+/* Definition list */
+.markdown-renderer dl {
+  margin-top: 0;
+  margin-bottom: var(--md-space-md);
+}
+
+.markdown-renderer dt {
+  font-weight: 600;
+  margin-top: var(--md-space-sm);
+}
+
+.markdown-renderer dd {
+  margin-left: var(--md-space-md);
+  color: var(--md-fg);
+}

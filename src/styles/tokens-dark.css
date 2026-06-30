@@ -1,0 +1,94 @@
+/**
+ * tokens-dark.css — Dark theme overrides
+ *
+ * Applied via .markdown-renderer[data-theme="dark"].
+ * Auto theme: .markdown-renderer[data-theme="auto"] inside
+ * @media (prefers-color-scheme: dark) applies the same overrides.
+ */
+
+.markdown-renderer[data-theme="dark"] {
+  --md-bg: #0d1117;
+  --md-fg: #c9d1d9;
+  --md-link: #58a6ff;
+  --md-link-hover: #79c0ff;
+  --md-border: #30363d;
+  --md-border-strong: #6e7681;
+  --md-code-bg: #161b22;
+  --md-code-fg: #c9d1d9;
+  --md-code-border: #30363d;
+  --md-blockquote-bg: #161b22;
+  --md-blockquote-border: #30363d;
+  --md-mark-bg: #342a00;
+  --md-table-header-bg: #161b22;
+  --md-table-stripe-bg: #0d1117;
+  --md-kbd-bg: #161b22;
+  --md-kbd-border: #30363d;
+  --md-callout-note-bg: #0c2d6b;
+  --md-callout-note-border: #58a6ff;
+  --md-callout-note-icon: #58a6ff;
+  --md-callout-tip-bg: #0b3d1e;
+  --md-callout-tip-border: #3fb950;
+  --md-callout-tip-icon: #3fb950;
+  --md-callout-warning-bg: #3d2e00;
+  --md-callout-warning-border: #d29922;
+  --md-callout-warning-icon: #d29922;
+  --md-callout-danger-bg: #4d1217;
+  --md-callout-danger-border: #f85149;
+  --md-callout-danger-icon: #f85149;
+  --md-callout-info-bg: #083546;
+  --md-callout-info-border: #39d2e0;
+  --md-callout-info-icon: #39d2e0;
+  --md-callout-success-bg: #0b3d1e;
+  --md-callout-success-border: #3fb950;
+  --md-callout-success-icon: #3fb950;
+  --md-callout-question-bg: #2a0d42;
+  --md-callout-question-border: #8957e5;
+  --md-callout-question-icon: #8957e5;
+  --md-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --md-shadow-md: 0 3px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Auto theme bridge — respects OS preference */
+@media (prefers-color-scheme: dark) {
+  .markdown-renderer[data-theme="auto"] {
+    --md-bg: #0d1117;
+    --md-fg: #c9d1d9;
+    --md-link: #58a6ff;
+    --md-link-hover: #79c0ff;
+    --md-border: #30363d;
+    --md-border-strong: #6e7681;
+    --md-code-bg: #161b22;
+    --md-code-fg: #c9d1d9;
+    --md-code-border: #30363d;
+    --md-blockquote-bg: #161b22;
+    --md-blockquote-border: #30363d;
+    --md-mark-bg: #342a00;
+    --md-table-header-bg: #161b22;
+    --md-table-stripe-bg: #0d1117;
+    --md-kbd-bg: #161b22;
+    --md-kbd-border: #30363d;
+    --md-callout-note-bg: #0c2d6b;
+    --md-callout-note-border: #58a6ff;
+    --md-callout-note-icon: #58a6ff;
+    --md-callout-tip-bg: #0b3d1e;
+    --md-callout-tip-border: #3fb950;
+    --md-callout-tip-icon: #3fb950;
+    --md-callout-warning-bg: #3d2e00;
+    --md-callout-warning-border: #d29922;
+    --md-callout-warning-icon: #d29922;
+    --md-callout-danger-bg: #4d1217;
+    --md-callout-danger-border: #f85149;
+    --md-callout-danger-icon: #f85149;
+    --md-callout-info-bg: #083546;
+    --md-callout-info-border: #39d2e0;
+    --md-callout-info-icon: #39d2e0;
+    --md-callout-success-bg: #0b3d1e;
+    --md-callout-success-border: #3fb950;
+    --md-callout-success-icon: #3fb950;
+    --md-callout-question-bg: #2a0d42;
+    --md-callout-question-border: #8957e5;
+    --md-callout-question-icon: #8957e5;
+    --md-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --md-shadow-md: 0 3px 8px rgba(0, 0, 0, 0.4);
+  }
+}
