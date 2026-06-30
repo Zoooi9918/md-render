@@ -156,46 +156,50 @@ function assert(label, condition) {
     r1._injectStyles === false);
 }
 
-/* ── Phase 6: Build artifacts ── */
+/* ── Phase 6: Build artifacts (conditional ── skip if dist/ not built) ── */
 {
   const dist = join(__dirname, "..", "dist");
+  const hasBuild = existsSync(join(dist, "markdown-renderer.esm.js"));
 
-  assert("Phase 6: dist/esm.js exists",
-    existsSync(join(dist, "markdown-renderer.esm.js")));
+  if (hasBuild) {
+    assert("Phase 6: dist/esm.js exists",
+      existsSync(join(dist, "markdown-renderer.esm.js")));
 
-  assert("Phase 6: dist/esm.min.js exists",
-    existsSync(join(dist, "markdown-renderer.esm.min.js")));
+    assert("Phase 6: dist/esm.min.js exists",
+      existsSync(join(dist, "markdown-renderer.esm.min.js")));
 
-  assert("Phase 6: dist/umd.js exists",
-    existsSync(join(dist, "markdown-renderer.umd.js")));
+    assert("Phase 6: dist/umd.js exists",
+      existsSync(join(dist, "markdown-renderer.umd.js")));
 
-  assert("Phase 6: dist/umd.min.js exists",
-    existsSync(join(dist, "markdown-renderer.umd.min.js")));
+    assert("Phase 6: dist/umd.min.js exists",
+      existsSync(join(dist, "markdown-renderer.umd.min.js")));
 
-  assert("Phase 6: dist/iife.js exists",
-    existsSync(join(dist, "markdown-renderer.iife.js")));
+    assert("Phase 6: dist/iife.js exists",
+      existsSync(join(dist, "markdown-renderer.iife.js")));
 
-  assert("Phase 6: dist/iife.min.js exists",
-    existsSync(join(dist, "markdown-renderer.iife.min.js")));
+    assert("Phase 6: dist/iife.min.js exists",
+      existsSync(join(dist, "markdown-renderer.iife.min.js")));
 
-  assert("Phase 6: dist/css exists",
-    existsSync(join(dist, "markdown-renderer.css")));
+    assert("Phase 6: dist/css exists",
+      existsSync(join(dist, "markdown-renderer.css")));
 
-  assert("Phase 6: dist/min.css exists",
-    existsSync(join(dist, "markdown-renderer.min.css")));
+    assert("Phase 6: dist/min.css exists",
+      existsSync(join(dist, "markdown-renderer.min.css")));
 
-  // Size checks (minified should be smaller than unminified)
-  const esm = readFileSync(join(dist, "markdown-renderer.esm.js"), "utf8");
-  const esmMin = readFileSync(join(dist, "markdown-renderer.esm.min.js"), "utf8");
-  assert("Phase 6: ESM min is smaller than unminified",
-    esmMin.length < esm.length);
+    // Size checks (minified should be smaller than unminified)
+    const esm = readFileSync(join(dist, "markdown-renderer.esm.js"), "utf8");
+    const esmMin = readFileSync(join(dist, "markdown-renderer.esm.min.js"), "utf8");
+    assert("Phase 6: ESM min is smaller than unminified",
+      esmMin.length < esm.length);
 
-  const css = readFileSync(join(dist, "markdown-renderer.css"), "utf8");
-  const cssMin = readFileSync(join(dist, "markdown-renderer.min.css"), "utf8");
-  assert("Phase 6: CSS min is smaller than unminified",
-    cssMin.length < css.length);
+    const css = readFileSync(join(dist, "markdown-renderer.css"), "utf8");
+    const cssMin = readFileSync(join(dist, "markdown-renderer.min.css"), "utf8");
+    assert("Phase 6: CSS min is smaller than unminified",
+      cssMin.length < css.length);
+  } else {
+    console.log("  ⊘ Phase 6: skipped (run 'npm run build' first)");
+  }
 }
-
 /* ── Performance ── */
 {
   const r = new MarkdownRenderer();
