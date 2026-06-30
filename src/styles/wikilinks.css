@@ -1,0 +1,56 @@
+/**
+ * wikilinks.css — Wikilink and embed link styles
+ *
+ * Tokens consumed: --md-link, --md-link-hover, --md-border,
+ *   --md-space-*, --md-radius-md, --md-shadow-sm, --md-font-size-sm,
+ *   --md-fg, --md-bg
+ */
+
+/* Wikilink — styled as a pill */
+.markdown-renderer a.wikilink {
+  display: inline-block;
+  padding: 2px 8px;
+  margin: 0 2px;
+  background: var(--md-code-bg);
+  border: 1px solid var(--md-border);
+  border-radius: var(--md-radius-sm);
+  color: var(--md-link);
+  font-size: var(--md-font-size-sm);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.markdown-renderer a.wikilink:hover {
+  background: var(--md-link);
+  color: var(--md-bg);
+  border-color: var(--md-link);
+}
+
+/* Embed link — card-style preview link */
+.markdown-renderer a.embed-link {
+  display: block;
+  padding: var(--md-space-sm) var(--md-space-md);
+  margin: var(--md-space-md) 0;
+  background: var(--md-bg);
+  border: 1px solid var(--md-border);
+  border-radius: var(--md-radius-md);
+  box-shadow: var(--md-shadow-sm);
+  text-decoration: none;
+  transition: box-shadow 0.15s ease;
+}
+
+.markdown-renderer a.embed-link:hover {
+  box-shadow: var(--md-shadow-md);
+}
+
+.markdown-renderer a.embed-link .embed-title {
+  font-weight: 600;
+  color: var(--md-link);
+  font-size: var(--md-font-size-sm);
+}
+
+.markdown-renderer a.embed-link .embed-desc {
+  color: var(--md-fg);
+  font-size: var(--md-font-size-sm);
+  margin-top: 2px;
+}

@@ -1,0 +1,23 @@
+/**
+ * index.css — Master stylesheet for markdown-renderer
+ *
+ * Imports all CSS modules in dependency order.
+ * This file is the source for dist/markdown-renderer.css.
+ */
+
+/* 0. Tokens (light defaults first, then dark overrides) */
+@import "tokens.css";
+@import "tokens-dark.css";
+
+/* 1. Base markdown elements */
+@import "base.css";
+
+/* 2. Feature styles */
+@import "callouts.css";
+@import "wikilinks.css";
+@import "embeds.css";
+@import "plugins.css";
+@import "code.css";
+
+/* 3. Print overrides (always last) */
+@import "print.css";
