@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>markdown-renderer — Dev Preview (Phase 2)</title>
+  <!--
+    Dev Preview — Phase 2 Smoke Test
+    =================================
+    This page loads the renderer as an ES module and renders test-content.md.
+    It is for developer verification ONLY — not for end users.
+
+    Loading strategy:
+    - markdown-it is loaded from node_modules via a CDN (esm.sh) since
+      bare ES module imports from node_modules don't work in the browser
+      without a bundler. The CDN resolves the CJS→ESM transformation.
+    - The local src/index.js is loaded as a relative ES module.
+  -->
+  <script type="importmap">
+  {
+    "imports": {
+      "markdown-it": "https://esm.sh/markdown-it@14"
+    }
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; color: #1a1a2e; background: #f8f9fa; padding: 2rem; max-width: 900px; margin: 0 auto; }
+    h1.page-title { font-size: 1.5rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #dee2e6; }
+    article { background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    article h1, article h2, article h3 { margin-top: 1.5rem; margin-bottom: 0.5rem; }
+    article h1 { border-bottom: 1px solid #eee; padding-bottom: 0.3rem; }
+    article p { margin-bottom: 1rem; }
+    article pre { background: #f4f4f5; padding: 1rem; border-radius: 6px; overflow-x: auto; margin-bottom: 1rem; }
+    article code { background: #f4f4f5; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+    article pre code { background: none; padding: 0; }
+    article blockquote { border-left: 4px solid #0066ff; padding: 0.5rem 1rem; margin: 1rem 0; background: #f0f4ff; }
+    article table { border-collapse: collapse; width: 100%; margin-bottom: 1rem; }
+    article th, article td { border: 1px solid #dee2e6; padding: 0.5rem; text-align: left; }
+    article th { background: #f8f9fa; }
+    article ul, article ol { margin-left: 2rem; margin-bottom: 1rem; }
+    article img { max-width: 100%; height: auto; }
+    article iframe { max-width: 100%; border: 1px solid #dee2e6; border-radius: 4px; }
+    article .callout { border: 1px solid #dee2e6; border-radius: 6px; padding: 0.75rem 1rem; margin: 1rem 0; }
+    article .callout-title { font-weight: 600; margin-bottom: 0.5rem; }
+    article .wikilink { color: #0066ff; text-decoration: underline; }
+    #error { color: #dc3545; background: #f8d7da; padding: 1rem; border-radius: 6px; margin-top: 1rem; display: none; }
+  </style>
+</head>
+<body>
+  <h1 class="page-title">🧪 Dev Preview — Phase 2 Core Renderer</h1>
+  <article id="output"></article>
+  <div id="error"></div>
+
+  <script type="module">
+    // Load markdown-it from CDN (esm.sh handles CJS→ESM transformation)
+    // Then load our local renderer which imports from markdown-it
+    // We need to configure the import map so "markdown-it" resolves to the CDN
+
+    import { MarkdownRenderer } from "../../src/index.js";
+
+    try {
+      // Fetch the test content
+      const response = await fetch("./test-content.md");
+      if (!response.ok) throw new Error(`Failed to load test-content.md: ${response.status}`);
+      const markdown = await response.text();
+
+      // Render with all rules enabled
+      const renderer = new MarkdownRenderer({
+        rules: {
+          headingIds: true,
+          callouts: true,
+          wikilinks: true,
+          obsidianEmbed: true,
+        },
+      });
+
+      const html = renderer.render(markdown);
+      document.getElementById("output").innerHTML = html;
+    } catch (err) {
+      const errorEl = document.getElementById("error");
+      errorEl.textContent = `Error: ${err.message}`;
+      errorEl.style.display = "block";
+      console.error("Render error:", err);
+    }
+  </script>
+</body>
+</html>
