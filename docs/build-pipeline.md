@@ -54,9 +54,30 @@ File: `.github/workflows/ci.yml`
 
 File: `.github/workflows/release.yml`
 
-- **Triggers**: Push to `main` with `package.json` version change
-- **Steps**: Detect version bump → Build + test → Create tag → GitHub release → Attach dist/ artifacts
+- **Triggers**: Tag push (`v*`)
+- **Steps**: Build + test → Create GitHub release → Attach dist/ artifacts
 - **jsDelivr**: Automatically picks up new tags for CDN distribution
+
+### Manual Release Steps
+
+1. Bump version in `package.json`
+2. Run `npm run build`
+3. Commit dist/ (dist/ is tracked, not gitignored)
+4. Create tag: `git tag -a v0.1.1 -m "Release v0.1.1"`
+5. Push tag: `git push origin v0.1.1`
+6. The `release.yml` workflow will create the GitHub release automatically
+7. Wait ~60 seconds for jsDelivr to cache the new tag
+8. Verify: `curl -sI https://cdn.jsdelivr.net/gh/Zoooi9918/md-render@v0.1.1/dist/md-render.umd.min.js`
+
+## Why dist/ is committed
+
+jsDelivr's `/gh/` path serves files directly from the **git tree** at the specified tag/branch. It does NOT serve GitHub Release attached binaries.
+
+For CDN distribution via `cdn.jsdelivr.net/gh/Zoooi9918/md-render@v0.1.0/dist/...`, the dist/ files must exist in the git commit that the tag points to.
+
+This is the standard pattern for libraries that want CDN distribution via `/gh/` paths before npm publish. The tradeoff is ~4.5 MB of repo size growth.
+
+**This approach is unnecessary if the project moves to npm-only distribution**, since jsDelivr's `/npm/` path serves from registry tarballs (which include dist/ via `files:` in package.json).
 
 ## Local Development
 
