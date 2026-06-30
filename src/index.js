@@ -30,6 +30,7 @@ export { PluginRegistry } from "./plugins/registry.js";
 export { LazyLoader } from "./plugins/lazy-loader.js";
 export { getDefaultPack } from "./plugins/default-pack.js";
 export * as bundledPlugins from "./plugins/bundled/index.js";
+export * as lazyPlugins from "./plugins/lazy/index.js";
 
 /**
  * Convenience function for quick, one-off renders.

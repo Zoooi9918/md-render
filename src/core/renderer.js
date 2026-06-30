@@ -3,6 +3,8 @@
  *
  * Constructs a markdown-it instance with configurable custom rules
  * and provides a clean interface for rendering markdown to HTML.
+ * Supports both synchronous render (fast path) and async render
+ * (with lazy-loaded heavy libraries: mermaid, katex, highlight.js).
  *
  * @module renderer
  */
@@ -16,6 +18,7 @@ import {
 } from "./rules/index.js";
 import { PluginRegistry } from "../plugins/registry.js";
 import { getDefaultPack } from "../plugins/default-pack.js";
+import { LazyLoader } from "../plugins/lazy-loader.js";
 
 /** Default rule toggles — all enabled */
 const DEFAULT_RULES = Object.freeze({
@@ -92,29 +95,31 @@ export class MarkdownRenderer {
     this._registry = new PluginRegistry(resolvedPlugins);
     this._registry.applyAll(this._md, pluginOptions);
 
+    // LazyLoader instance for async plugin loading
+    this._loader = new LazyLoader();
+
+    // Track which lazy plugins were loaded for this render
+    this._loadedPlugins = [];
+
     // Apply enabled custom rules in dependency order
-    // headingIds has no dependencies
     if (enabledRules.headingIds) {
       applyHeadingIds(this._md);
     }
-
-    // callouts runs as a core rule after inline processing
     if (enabledRules.callouts) {
       applyCallouts(this._md, calloutOptions);
     }
-
-    // wikilinks and obsidianEmbed are inline rules
     if (enabledRules.wikilinks) {
       applyWikilinks(this._md, wikilinkOptions);
     }
-
     if (enabledRules.obsidianEmbed) {
       applyObsidianEmbed(this._md, embedOptions);
     }
   }
 
   /**
-   * Renders a markdown string to HTML.
+   * Renders a markdown string to HTML (synchronous, fast path).
+   * For content with no lazy triggers, this is sufficient.
+   * Code blocks without highlighting, no mermaid, no math.
    *
    * @param {string} markdownString - The markdown source to render
    * @returns {string} The rendered HTML string
@@ -124,13 +129,85 @@ export class MarkdownRenderer {
   }
 
   /**
-   * Renders markdown and inserts the HTML into a DOM element.
+   * Renders markdown asynchronously, loading lazy plugins on demand.
+   *
+   * Scans the AST for lazy triggers (mermaid fences, code fences with lang,
+   * math tokens), loads the required CDN libraries, then renders.
+   *
+   * @param {string} markdownString - The markdown source to render
+   * @returns {Promise<string>} The rendered HTML string
+   */
+  async renderAsync(markdownString) {
+    this._loadedPlugins = [];
+
+    // Parse tokens to detect lazy needs
+    const tokens = this._md.parse(markdownString, {});
+    const needs = this._scanTokens(tokens);
+
+    // Load deferred plugins for detected needs
+    const loaderOpts = {
+      injectScript: (url, fallback) => this._loader.injectScript(url, fallback),
+      injectStylesheet: (url, fallback) => this._loader.injectStylesheet(url, fallback),
+      injectModule: (url, fallback) => this._loader.injectModule(url, fallback),
+    };
+
+    for (const needId of needs) {
+      const plugin = this._registry.getById(needId);
+      if (plugin) {
+        try {
+          const factory = await this._loader.loadOnce(plugin, loaderOpts);
+          this._md.use(factory, plugin.options || {});
+          this._loadedPlugins.push(plugin.id);
+        } catch (err) {
+          // Degrade gracefully — plugin not loaded, content renders as plain text
+          console.warn(`[renderer] Failed to load ${needId}:`, err.message);
+        }
+      }
+    }
+
+    return this._md.render(markdownString);
+  }
+
+  /**
+   * Scan markdown-it tokens for lazy plugin triggers.
+   * @param {Array} tokens - Parsed markdown-it tokens
+   * @returns {string[]} Array of plugin ids needed
+   */
+  _scanTokens(tokens) {
+    const needs = new Set();
+
+    for (const token of tokens) {
+      if (token.type === "fence") {
+        const lang = (token.info || "").trim();
+        if (lang === "mermaid") {
+          needs.add("mermaid");
+        } else if (lang.length > 0) {
+          needs.add("highlight");
+        }
+      }
+      if (token.type === "math_inline" || token.type === "math_block") {
+        needs.add("katex");
+      }
+      // Recurse into child tokens (e.g., list items, blockquotes)
+      if (token.children && token.children.length) {
+        for (const child of this._scanTokens(token.children)) {
+          needs.add(child);
+        }
+      }
+    }
+
+    return [...needs];
+  }
+
+  /**
+   * Renders markdown and inserts the HTML into a DOM element (async).
+   * After DOM insertion, runs postRender hooks (mermaid.run, etc.).
    *
    * @param {string|HTMLElement} elementOrSelector - A CSS selector string or an HTMLElement
    * @param {string} markdownString - The markdown source to render
-   * @returns {HTMLElement} The target element with rendered content
+   * @returns {Promise<HTMLElement>} The target element with rendered content
    */
-  renderInto(elementOrSelector, markdownString) {
+  async renderInto(elementOrSelector, markdownString) {
     const target = typeof elementOrSelector === "string"
       ? document.querySelector(elementOrSelector)
       : elementOrSelector;
@@ -139,16 +216,33 @@ export class MarkdownRenderer {
       throw new Error(`Target element not found: ${elementOrSelector}`);
     }
 
-    target.innerHTML = this.render(markdownString);
+    const html = await this.renderAsync(markdownString);
+    target.innerHTML = html;
+
+    // Post-render hooks
+    await this._postRender();
+
     return target;
   }
 
   /**
+   * Run post-render hooks (mermaid diagram rendering, etc.).
+   * @private
+   */
+  async _postRender() {
+    if (this._loadedPlugins.includes("mermaid") &&
+        typeof window !== "undefined" &&
+        window.markdownRendererMermaid) {
+      try {
+        await window.markdownRendererMermaid.run();
+      } catch (err) {
+        console.warn("[renderer] mermaid post-render failed:", err.message);
+      }
+    }
+  }
+
+  /**
    * Returns the underlying markdown-it instance.
-   *
-   * Useful for advanced use cases: registering additional plugins,
-   * accessing the tokenizer, or custom rule manipulation.
-   *
    * @returns {MarkdownIt} The internal markdown-it instance
    */
   getInstance() {
@@ -157,7 +251,6 @@ export class MarkdownRenderer {
 
   /**
    * Returns the PluginRegistry instance for inspection.
-   *
    * @returns {PluginRegistry} The plugin registry
    */
   getRegistry() {
@@ -166,10 +259,25 @@ export class MarkdownRenderer {
 
   /**
    * Returns the list of deferred plugin ids (plugins without sync apply).
-   *
    * @returns {string[]} Array of deferred plugin ids
    */
   getDeferredPlugins() {
     return this._registry.getDeferred();
+  }
+
+  /**
+   * Returns the LazyLoader instance for observability.
+   * @returns {LazyLoader} The lazy loader
+   */
+  getLoader() {
+    return this._loader;
+  }
+
+  /**
+   * Returns the list of lazy plugins loaded during the last renderAsync call.
+   * @returns {string[]} Array of loaded plugin ids
+   */
+  getLoadedPlugins() {
+    return [...this._loadedPlugins];
   }
 }

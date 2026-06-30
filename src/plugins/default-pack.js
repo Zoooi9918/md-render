@@ -1,6 +1,6 @@
 /**
  * @module plugins/default-pack
- * Returns the default array of bundled plugins.
+ * Returns the default array of all plugins (bundled + lazy).
  */
 import {
   markPlugin,
@@ -12,10 +12,15 @@ import {
   taskListsPlugin,
   deflistPlugin,
 } from "./bundled/index.js";
+import {
+  highlightPlugin,
+  mermaidPlugin,
+  katexPlugin,
+} from "./lazy/index.js";
 
 /**
- * Get the default plugin pack.
- * @returns {LazyPlugin[]} Array of 8 bundled plugins in deterministic order
+ * Get the default plugin pack (11 plugins: 8 bundled + 3 lazy).
+ * @returns {LazyPlugin[]} Array of plugins in deterministic order
  */
 export function getDefaultPack() {
   return [
@@ -27,5 +32,8 @@ export function getDefaultPack() {
     footnotePlugin,
     taskListsPlugin,
     deflistPlugin,
+    highlightPlugin,
+    mermaidPlugin,
+    katexPlugin,
   ];
 }
