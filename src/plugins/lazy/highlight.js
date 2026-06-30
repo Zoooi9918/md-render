@@ -39,18 +39,18 @@ export default {
       const hljs = typeof window !== "undefined" ? window.hljs : null;
       if (!hljs) return;
       md.options.highlight = function (str, lang) {
+        // Skip mermaid — handled by mermaid plugin
+        if (lang === "mermaid") return "";
+        // Known language: highlight with class
         if (lang && hljs.getLanguage(lang)) {
           try {
-            return hljs.highlight(str, { language: lang }).value;
+            return '<pre><code class="hljs language-' + lang + '">'
+              + hljs.highlight(str, { language: lang, ignoreIllegals: true }).value
+              + '</code></pre>';
           } catch (_) { /* fall through */ }
         }
-        try {
-          const result = hljs.highlightAuto(str);
-          if (result.language) {
-            return hljs.highlight(str, { language: result.language }).value;
-          }
-        } catch (_) { /* fall through */ }
-        return null; // fallback to default escaping
+        // Unknown language: escape and wrap
+        return '<pre><code class="hljs">' + md.utils.escapeHtml(str) + '</code></pre>';
       };
     };
   },
