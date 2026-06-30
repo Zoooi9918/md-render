@@ -14,6 +14,8 @@ import {
   applyWikilinks,
   applyObsidianEmbed,
 } from "./rules/index.js";
+import { PluginRegistry } from "../plugins/registry.js";
+import { getDefaultPack } from "../plugins/default-pack.js";
 
 /** Default rule toggles — all enabled */
 const DEFAULT_RULES = Object.freeze({
@@ -44,6 +46,10 @@ export class MarkdownRenderer {
    * @param {object} [options.callouts] - Options forwarded to applyCallouts
    * @param {object} [options.wikilinks] - Options forwarded to applyWikilinks
    * @param {object} [options.obsidianEmbed] - Options forwarded to applyObsidianEmbed
+   * @param {LazyPlugin[]} [options.plugins] - Custom plugin array (overrides default pack)
+   * @param {string[]} [options.disablePlugins] - Plugin ids to disable
+   * @param {string[]} [options.enablePlugins] - If set, ONLY these plugin ids are kept
+   * @param {Object<string, Object>} [options.pluginOptions] - Per-plugin option overrides keyed by id
    */
   constructor(options = {}) {
     const {
@@ -62,6 +68,29 @@ export class MarkdownRenderer {
 
     // Build the markdown-it instance with user options
     this._md = createMarkdownIt(markdownItOptions);
+
+    // Resolve plugin list
+    let resolvedPlugins;
+    if (enablePlugins !== undefined) {
+      const defaultPack = getDefaultPack();
+      resolvedPlugins = defaultPack.filter((p) =>
+        enablePlugins.includes(p.id)
+      );
+    } else if (userPlugins !== undefined) {
+      resolvedPlugins = [...userPlugins];
+    } else {
+      resolvedPlugins = getDefaultPack();
+    }
+    // Apply disable filter
+    if (disablePlugins.length > 0) {
+      resolvedPlugins = resolvedPlugins.filter(
+        (p) => !disablePlugins.includes(p.id)
+      );
+    }
+
+    // Apply plugin registry BEFORE custom rules
+    this._registry = new PluginRegistry(resolvedPlugins);
+    this._registry.applyAll(this._md, pluginOptions);
 
     // Apply enabled custom rules in dependency order
     // headingIds has no dependencies
@@ -124,5 +153,23 @@ export class MarkdownRenderer {
    */
   getInstance() {
     return this._md;
+  }
+
+  /**
+   * Returns the PluginRegistry instance for inspection.
+   *
+   * @returns {PluginRegistry} The plugin registry
+   */
+  getRegistry() {
+    return this._registry;
+  }
+
+  /**
+   * Returns the list of deferred plugin ids (plugins without sync apply).
+   *
+   * @returns {string[]} Array of deferred plugin ids
+   */
+  getDeferredPlugins() {
+    return this._registry.getDeferred();
   }
 }

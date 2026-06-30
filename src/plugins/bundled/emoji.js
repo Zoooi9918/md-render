@@ -2,7 +2,7 @@
  * @module plugins/bundled/emoji
  * @implements {LazyPlugin}
  */
-import markdownItEmoji from "markdown-it-emoji";
+import * as markdownItEmoji from "markdown-it-emoji";
 
 export default {
   id: "emoji",
