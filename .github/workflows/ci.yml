@@ -1,0 +1,55 @@
+# CI — Test + Build matrix
+# Triggers on every push to main and every PR to main
+# Runs on Node 18 and Node 20 (both LTS)
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-and-build:
+    # Run all matrix combos even if one fails
+    continue-on-error: false
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [18, 20]
+        os: [ubuntu-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      # 1. Checkout the repo
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Setup Node.js
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      # 3. Install dependencies (deterministic, uses lockfile)
+      - name: Install
+        run: npm ci
+
+      # 4. Run smoke tests (source-level, no build needed)
+      - name: Test
+        run: npm test
+
+      # 5. Run the full build (esbuild + CSS)
+      - name: Build
+        run: npm run build
+
+      # 6. Upload dist artifact for inspection
+      - name: Upload dist artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-node${{ matrix.node-version }}
+          path: dist/
+          retention-days: 7
