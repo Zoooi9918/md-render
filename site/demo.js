@@ -1,25 +1,26 @@
 /**
  * demo.js — Demo site wiring.
  *
- * Loads the renderer from CDN, wires the editor → preview pipeline,
+ * Loads the renderer from CDN, wires the editor to preview pipeline,
  * theme toggle, and sample file loader.
  */
 
 (function () {
   "use strict";
 
-  const editor = document.getElementById("editor");
-  const preview = document.getElementById("preview");
-  const sampleSelect = document.getElementById("sample-select");
-  const themeSelect = document.getElementById("theme-select");
+  var editor = document.getElementById("editor");
+  var preview = document.getElementById("preview");
+  var sampleSelect = document.getElementById("sample-select");
+  var themeSelect = document.getElementById("theme-select");
 
-  // Create renderer with injectStyles so CSS is baked in
-  const renderer = new MarkdownRenderer({ injectStyles: true });
+  // Handle both namespace and direct global exposure
+  var MR = MarkdownRenderer.MarkdownRenderer || MarkdownRenderer;
+  var renderer = new MR({ injectStyles: true });
 
-  let debounceTimer = null;
+  var debounceTimer = null;
 
   function render() {
-    const md = editor.value;
+    var md = editor.value;
     renderer.renderInto(preview, md).catch(function (err) {
       preview.innerHTML = "<pre style='color:red'>" + escapeHtml(err.toString()) + "</pre>";
     });
@@ -42,7 +43,7 @@
 
   // Sample loader
   sampleSelect.addEventListener("change", function () {
-    const sample = this.value;
+    var sample = this.value;
     fetch("samples/" + sample + ".md")
       .then(function (res) { return res.text(); })
       .then(function (text) {
@@ -55,9 +56,9 @@
       });
   });
 
-  // Initial load: load the first sample
+  // Initial load
   (function init() {
-    const sample = sampleSelect.value;
+    var sample = sampleSelect.value;
     fetch("samples/" + sample + ".md")
       .then(function (res) { return res.text(); })
       .then(function (text) {
