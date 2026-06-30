@@ -23,6 +23,34 @@ The `LazyLoader` class manages CDN resource injection with three key features:
 ```js
 await loader.injectScript(primaryUrl, fallbackUrl);
 ```
+
+## Manual Verification (Before Each Release)
+
+These tests require a real browser with DevTools. Run before every release.
+
+### Prerequisites
+1. Start local server: `npx http-server . -p 5500 -s` from project root.
+2. Open `http://127.0.0.1:5500/examples/dev-preview.html`.
+
+### Test 1: CDN Fallback Chain (jsdelivr → unpkg)
+1. DevTools → Network → right-click any `cdn.jsdelivr.net` request → "Block request domain".
+2. Add domain: `cdn.jsdelivr.net`.
+3. Application → Storage → Clear site data.
+4. Hard refresh (Ctrl+F5).
+5. **Expected**: All 3 lazy plugins load from `unpkg.com` instead.
+6. **Evidence**: Lazy Load History panel shows `fallback: true` for each entry.
+7. Remove block → hard refresh → confirm normal behavior restored.
+
+### Test 2: Graceful Degradation (both CDNs blocked)
+1. DevTools → Network → block both: `cdn.jsdelivr.net` AND `unpkg.com`.
+2. Clear site data. Hard refresh.
+3. **Expected**:
+  - Page does NOT blank-screen.
+  - Code blocks render as plain `<pre><code>` (no colors).
+  - Mermaid shows raw source in `<pre class="mermaid">`.
+  - Math shows literal `$...$` as text.
+  - Console shows controlled `[highlight] CDN load failed` warnings (not crashes).
+4. Remove both blocks → hard refresh → confirm baseline restored.
 - Creates a `<script>` tag and appends to `<head>`
 - Deduplicates by URL — parallel calls to the same URL share one Promise
 - On failure, automatically tries the fallback URL (e.g., jsdelivr → unpkg)

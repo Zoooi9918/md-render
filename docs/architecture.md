@@ -118,3 +118,4 @@ see [docs/plugin-system.md](plugin-system.md).
 Heavy libraries (mermaid, KaTeX, highlight.js) are loaded from CDN on demand.
 For the lazy loading architecture, CDN fallback, and graceful degradation,
 see [docs/lazy-loading.md](lazy-loading.md).
+see [docs/lazy-loading.md](lazy-loading.md), including the **Manual Verification** section for pre-release testing.
